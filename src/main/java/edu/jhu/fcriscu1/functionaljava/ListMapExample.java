@@ -9,6 +9,7 @@ import static fj.Show.intShow;
 import static fj.Show.listShow;
 import fj.data.Array;
 import fj.data.Option;
+import fj.function.Effect0;
 
 import static fj.data.Array.array;
 import static fj.data.List.fromString;
@@ -67,6 +68,8 @@ public class ListMapExample {
         optionShow(intShow).println(o4a); // None
         optionShow(intShow).println(o5a); // Some(8)
         optionShow(intShow).println(o9); // None)
+
+
 
 
 
