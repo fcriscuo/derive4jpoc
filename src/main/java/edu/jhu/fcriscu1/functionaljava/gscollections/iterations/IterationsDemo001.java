@@ -1,13 +1,16 @@
 package edu.jhu.fcriscu1.functionaljava.gscollections.iterations;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.block.predicate.Predicate2;
+import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
 import com.gs.collections.api.partition.list.PartitionMutableList;
-import com.gs.collections.api.set.MutableSet;
+import com.gs.collections.impl.block.function.AddFunction;
+import com.gs.collections.impl.factory.Lists;
 import com.gs.collections.impl.list.mutable.ListAdapter;
 import edu.jhu.fcriscu1.functionaljava.MiRNADataService;
 import edu.jhu.fcriscu1.functionaljava.MiRnaData;
@@ -15,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by fcriscuo on 11/14/15.
@@ -59,6 +63,26 @@ public class IterationsDemo001 {
         for (MiRnaData.MiRnaCancer cancer : gastricList){
             logger.info(cancer.toString());
         }
+        // detect the first glioma in the collection
+        MiRnaData.MiRnaCancer glioma = rnaList.detect(miRnaCancer -> miRnaCancer.cancer().equals("glioma"));
+        logger.info("First glioma " + glioma.toString());
+        // AllSatisfy pattern
+        // do all the entries in the miRNA list specify a Cancer type
+        logger.info("All miRNAs have a cancer type: " + rnaList.allSatisfy(rna -> !Strings.isNullOrEmpty(rna.cancer())));
+        // forEach (replacement for "for loop") & Procedure
+        final Set<String> uniqueCancerSet = Sets.newHashSet();
+        Procedure<MiRnaData.MiRnaCancer> proc01 = new Procedure<MiRnaData.MiRnaCancer>() {
+            @Override
+            public void value(MiRnaData.MiRnaCancer miRnaCancer) {
+                uniqueCancerSet.add(miRnaCancer.cancer());
+            }
+        };
+        rnaList.forEach(proc01);
+        for(String s : uniqueCancerSet){
+            logger.info(s);
+        }
+        //InjectInto Pattern similar to reduce
+       logger.info("InjectInto: " +Lists.mutable.of(1, 2,3,4).injectInto(3, AddFunction.INTEGER));
 
 
 
